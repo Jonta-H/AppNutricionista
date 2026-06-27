@@ -3,9 +3,11 @@ package com.unifacef.app_nutricionista.controller;
 import com.unifacef.app_nutricionista.model.Nutricionista;
 import com.unifacef.app_nutricionista.service.NutricionistaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 import java.util.List;
 
@@ -30,16 +32,25 @@ public class NutricionistaController {
 
     @PostMapping
     public ResponseEntity<Nutricionista> createNutricionista(@RequestBody Nutricionista nutricionista) {
-        Nutricionista savedNutricionista = nutricionistaService.save(nutricionista);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedNutricionista);
+        Nutricionista saved = nutricionistaService.save(nutricionista);
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest().path("/{id}")
+                .buildAndExpand(saved.getId()).toUri();
+        return ResponseEntity.created(uri).body(saved);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Nutricionista> updateNutricionista(@PathVariable Long id, @RequestBody Nutricionista nutricionista) {
+        Nutricionista updated = nutricionistaService.update(id, nutricionista);
+        if (updated == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteNutricionista(@PathVariable Long id) {
-        if (nutricionistaService.findById(id).isEmpty()) {
-            return ResponseEntity.notFound().build();
+        if (nutricionistaService.deleteById(id)) {
+            return ResponseEntity.noContent().build();
         }
-        nutricionistaService.deleteById(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.notFound().build();
     }
 }

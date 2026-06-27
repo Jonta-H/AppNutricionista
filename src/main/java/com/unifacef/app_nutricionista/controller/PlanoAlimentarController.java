@@ -3,9 +3,11 @@ package com.unifacef.app_nutricionista.controller;
 import com.unifacef.app_nutricionista.model.PlanoAlimentar;
 import com.unifacef.app_nutricionista.service.PlanoAlimentarService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 import java.util.List;
 
@@ -17,29 +19,38 @@ public class PlanoAlimentarController {
     private PlanoAlimentarService service;
 
     @GetMapping
-    public List<PlanoAlimentar> getAll() {
+    public List<PlanoAlimentar> getAllPlanosAlimentares() {
         return service.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PlanoAlimentar> getById(@PathVariable Long id) {
+    public ResponseEntity<PlanoAlimentar> getPlanoAlimentarById(@PathVariable Long id) {
         return service.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<PlanoAlimentar> create(@RequestBody PlanoAlimentar plano) {
+    public ResponseEntity<PlanoAlimentar> createPlanoAlimentar(@RequestBody PlanoAlimentar plano) {
         PlanoAlimentar saved = service.save(plano);
-        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest().path("/{id}")
+                .buildAndExpand(saved.getId()).toUri();
+        return ResponseEntity.created(uri).body(saved);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<PlanoAlimentar> updatePlanoAlimentar(@PathVariable Long id, @RequestBody PlanoAlimentar plano) {
+        PlanoAlimentar updated = service.update(id, plano);
+        if (updated == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        if (service.findById(id).isEmpty()) {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<Void> deletePlanoAlimentar(@PathVariable Long id) {
+        if (service.deleteById(id)) {
+            return ResponseEntity.noContent().build();
         }
-        service.deleteById(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.notFound().build();
     }
 }

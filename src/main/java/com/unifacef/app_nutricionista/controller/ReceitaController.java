@@ -3,9 +3,11 @@ package com.unifacef.app_nutricionista.controller;
 import com.unifacef.app_nutricionista.model.Receita;
 import com.unifacef.app_nutricionista.service.ReceitaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 import java.util.List;
 
@@ -17,29 +19,38 @@ public class ReceitaController {
     private ReceitaService service;
 
     @GetMapping
-    public List<Receita> getAll() {
+    public List<Receita> getAllReceitas() {
         return service.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Receita> getById(@PathVariable Long id) {
+    public ResponseEntity<Receita> getReceitaById(@PathVariable Long id) {
         return service.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<Receita> create(@RequestBody Receita receita) {
+    public ResponseEntity<Receita> createReceita(@RequestBody Receita receita) {
         Receita saved = service.save(receita);
-        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest().path("/{id}")
+                .buildAndExpand(saved.getId()).toUri();
+        return ResponseEntity.created(uri).body(saved);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Receita> updateReceita(@PathVariable Long id, @RequestBody Receita receita) {
+        Receita updated = service.update(id, receita);
+        if (updated == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        if (service.findById(id).isEmpty()) {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<Void> deleteReceita(@PathVariable Long id) {
+        if (service.deleteById(id)) {
+            return ResponseEntity.noContent().build();
         }
-        service.deleteById(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.notFound().build();
     }
 }
