@@ -1,6 +1,5 @@
 package com.unifacef.app_nutricionista.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -8,7 +7,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name= "Usuarios")
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "tipo")
+@DiscriminatorColumn(name = "tipo", discriminatorType = DiscriminatorType.STRING)
 public abstract class Usuario implements Autenticavel {
 
     @Id
@@ -26,21 +25,10 @@ public abstract class Usuario implements Autenticavel {
     protected LocalDate dataNascimento;
     @Column(nullable = false)
     protected String genero; // "M", "F" ou "O"
-    protected byte[] foto; // opcional
+    @Column(name = "url_foto", length = 521)
+    protected String foto; // opcional
 
-    @JsonCreator
     public Usuario() {
-    }
-
-    public Usuario(Long id, String nomeCompleto, String email, String senha,
-                   String telefone, LocalDate dataNascimento, String genero) {
-        this.id = id;
-        this.nomeCompleto = nomeCompleto;
-        this.email = email;
-        this.senhaHash = senha != null ? String.valueOf(senha.hashCode()) : null;
-        this.telefone = telefone;
-        this.dataNascimento = dataNascimento;
-        this.genero = genero;
     }
 
     // Método abstrato — cada subclasse define seu tipo de perfil
@@ -118,11 +106,11 @@ public abstract class Usuario implements Autenticavel {
         this.genero = g;
     }
 
-    public byte[] getFoto() {
+    public String getFoto() {
         return foto;
     }
 
-    public void setFoto(byte[] f) {
+    public void setFoto(String f) {
         this.foto = f;
     }
 }

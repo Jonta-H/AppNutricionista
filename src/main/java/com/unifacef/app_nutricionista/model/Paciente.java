@@ -1,26 +1,24 @@
 package com.unifacef.app_nutricionista.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "pacientes")
-@DiscriminatorValue("1")
+@DiscriminatorValue("paciente")
 public class Paciente extends Usuario implements Sincronizavel {
 
     @Column(nullable = false)
     private String endereco;
-    @Column(nullable = false)
     private String observacoesGerais;
-    private boolean ativo;
+    @Column(nullable = false)
+    private Boolean ativo;
 
     @ManyToOne
-    @JoinColumn(name = "nutricionista_id")
+    @JoinColumn(name = "nutricionista_id", nullable = false)
     @JsonIgnoreProperties("pacientes")
     private Nutricionista nutricionista;
 
@@ -36,25 +34,10 @@ public class Paciente extends Usuario implements Sincronizavel {
     @JsonIgnoreProperties("paciente")
     private List<Consulta> historicoConsulta;
 
-    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("paciente")
+    @Transient
     private List<Anamnese> historicoAnamneses;
 
-    @JsonCreator
     public Paciente() {
-        this.historicoAvaliacoes = new ArrayList<>();
-        this.historicoDietas = new ArrayList<>();
-        this.historicoConsulta = new ArrayList<>();
-        this.historicoAnamneses = new ArrayList<>();
-    }
-
-    public Paciente(Long id, String nome, String email, String senha,
-                    String telefone, LocalDate dataNasc, String genero,
-                    String endereco, String observacoesGerais) {
-        super(id, nome, email, senha, telefone, dataNasc, genero);
-        this.endereco = endereco;
-        this.observacoesGerais = observacoesGerais;
-        this.ativo = true;
         this.historicoAvaliacoes = new ArrayList<>();
         this.historicoDietas = new ArrayList<>();
         this.historicoConsulta = new ArrayList<>();
@@ -132,11 +115,11 @@ public class Paciente extends Usuario implements Sincronizavel {
         return historicoAnamneses;
     }
 
-    public boolean isAtivo() {
+    public Boolean isAtivo() {
         return ativo;
     }
 
-    public void setAtivo(boolean ativo) {
+    public void setAtivo(Boolean ativo) {
         this.ativo = ativo;
     }
 

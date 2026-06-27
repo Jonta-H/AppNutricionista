@@ -1,6 +1,5 @@
 package com.unifacef.app_nutricionista.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.time.LocalDate;
@@ -8,13 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "nutricionistas")
-@DiscriminatorValue("2")
+@Table(name = "nutricionista")
+@DiscriminatorValue("nutricionista")
 public class Nutricionista extends Usuario {
 
+    @Column(nullable=false)
     private String crn;  // CRN
+    @Column(nullable=false)
     private String nomeClinica;
-    private byte[] logoTipoClinica;
+    @Column(name = "url_logoClinica", length = 521)
+    private String logoTipoClinica;
 
     @OneToMany(mappedBy = "nutricionista", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("nutricionista")
@@ -26,19 +28,7 @@ public class Nutricionista extends Usuario {
     @Transient
     private List<ModeloDieta> modelosDieta;
 
-    @JsonCreator
     public Nutricionista() {
-        this.pacientes = new ArrayList<>();
-        this.bancoReceitas = new ArrayList<>();
-        this.modelosDieta = new ArrayList<>();
-    }
-
-    public Nutricionista(Long id, String nome, String email, String senha,
-                         String telefone, LocalDate dataNasc, String genero,
-                         String crn) {
-        // Chama o construtor da superclasse
-        super(id, nome, email, senha, telefone, dataNasc, genero);
-        this.crn = crn;
         this.pacientes = new ArrayList<>();
         this.bancoReceitas = new ArrayList<>();
         this.modelosDieta = new ArrayList<>();
@@ -91,11 +81,11 @@ public class Nutricionista extends Usuario {
         return modelosDieta;
     }
 
-    public byte[] getLogoTipoClinica() {
+    public String getLogoTipoClinica() {
         return logoTipoClinica;
     }
 
-    public void setLogoTipoClinica(byte[] logoTipoClinica) {
+    public void setLogoTipoClinica(String logoTipoClinica) {
         this.logoTipoClinica = logoTipoClinica;
     }
 

@@ -10,6 +10,7 @@ public class Alimento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable=false)
     private String nome;
     private double calorias;
     private double carboidratos;
@@ -19,18 +20,6 @@ public class Alimento {
     private double porcaoReferencia;
 
     public Alimento() {
-    }
-
-    public Alimento(String nome, double calorias, double carboidratos,
-                    double proteinas, double gorduras, double fibras,
-                    double porcaoReferencia) {
-        this.nome = nome;
-        this.calorias = calorias;
-        this.carboidratos = carboidratos;
-        this.proteinas = proteinas;
-        this.gorduras = gorduras;
-        this.fibras = fibras;
-        this.porcaoReferencia = porcaoReferencia;
     }
 
     public String getNome() {

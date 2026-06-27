@@ -21,10 +21,14 @@ public class PlanoAlimentar implements CalculadoraNutricional, Exportavel {
     @JsonIgnoreProperties({"historicoDietas", "nutricionista", "historicoAvaliacoes", "historicoConsulta", "historicoAnamneses", "dietaVigente"})
     private Paciente paciente;
 
+    @Column(nullable=false)
     private String titulo;
+    @Column(nullable=false)
     private LocalDate dataCriacao;
+    @Column(nullable=false)
     private String objetivo;
-    private boolean ativo;
+    @Column(nullable=false)
+    private Boolean ativo;
     private LocalDate dataValidade;
 
     @OneToMany(cascade = CascadeType.ALL)
@@ -106,11 +110,11 @@ public class PlanoAlimentar implements CalculadoraNutricional, Exportavel {
         this.objetivo = o;
     }
 
-    public boolean isAtivo() {
+    public Boolean isAtivo() {
         return ativo;
     }
 
-    public void setAtivo(boolean a) {
+    public void setAtivo(Boolean a) {
         this.ativo = a;
     }
 

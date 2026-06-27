@@ -17,16 +17,6 @@ public class Mensagem {
         this.lida = false;
     }
 
-    public Mensagem(Long id, String conteudo,
-                    Usuario remetente, Usuario destinatario) {
-        this.id = id;
-        this.conteudo = conteudo;
-        this.remetente = remetente;
-        this.destinatario = destinatario;
-        this.dataHoraEnvio = LocalDateTime.now();
-        this.lida = false;
-    }
-
     public Long getId() {
         return id;
     }

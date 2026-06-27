@@ -12,14 +12,6 @@ public class NotificacaoAgenda implements ServicoMensageria {
         this.statusEnvio = "PENDENTE";
     }
 
-    public NotificacaoAgenda(Long id, String modeloTexto,
-                             Paciente paciente, Consulta consulta) {
-        this.modeloTexto = modeloTexto;
-        this.paciente = paciente;
-        this.consulta = consulta;
-        this.statusEnvio = "PENDENTE";
-    }
-
     // Implementação do método da interface ServicoMensageria
     @Override
     public void notificarStatus(Mensagem msg) {

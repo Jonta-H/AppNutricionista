@@ -12,6 +12,7 @@ import java.util.Map;
  * Usa um ProtocoloAvaliacao (que pode ser JacksonPollock3Dobras ou JacksonPollock7Dobras).
  */
 @Entity
+@Table(name = "avaliacoes_corporais")
 public class AvaliacaoCorporal {
 
     @Id
@@ -38,17 +39,6 @@ public class AvaliacaoCorporal {
 
     public AvaliacaoCorporal() {
         this.medidas = new DadosMedidas();
-    }
-
-    public AvaliacaoCorporal(Long id, LocalDate dataAvaliacao,
-                             double peso, double altura, Paciente paciente) {
-        this.id = id;
-        this.dataAvaliacao = dataAvaliacao;
-        this.peso = peso;
-        this.altura = altura;
-        this.paciente = paciente;
-        this.medidas = new DadosMedidas();
-        calcularIMC();
     }
 
     public double calcularIMC() {

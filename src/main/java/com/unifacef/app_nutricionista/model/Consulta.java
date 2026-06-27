@@ -11,16 +11,18 @@ public class Consulta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable=false)
     private LocalDateTime dataHora;
+    @Column(nullable=false)
     private String status;         // "AGENDADA", "REALIZADA", "CANCELADA"
 
     @ManyToOne
-    @JoinColumn(name = "nutricionista_id")
+    @JoinColumn(name = "nutricionista_id", nullable = false)
     @JsonIgnoreProperties("pacientes")
     private Nutricionista nutricionista;
 
     @ManyToOne
-    @JoinColumn(name = "paciente_id")
+    @JoinColumn(name = "paciente_id", nullable = false)
     @JsonIgnoreProperties({"historicoConsulta", "nutricionista", "historicoDietas", "historicoAvaliacoes", "historicoAnamneses", "dietaVigente"})
     private Paciente paciente;
 
@@ -31,15 +33,6 @@ public class Consulta {
     private Anamnese anamnese;
 
     public Consulta() {
-        this.status = "AGENDADA";
-    }
-
-    public Consulta(Long id, LocalDateTime dataHora,
-                    Nutricionista nutricionista, Paciente paciente) {
-        this.id = id;
-        this.dataHora = dataHora;
-        this.nutricionista = nutricionista;
-        this.paciente = paciente;
         this.status = "AGENDADA";
     }
 

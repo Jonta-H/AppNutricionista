@@ -24,13 +24,6 @@ public class Anamnese implements GerenciadorHistorico {
     public Anamnese() {
     }
 
-    public Anamnese(Consulta consulta,
-                    String sintomasRelatados, String condutaAdotada) {
-        this.consulta = consulta;
-        this.sintomasRelatados = sintomasRelatados;
-        this.condutaAdotada = condutaAdotada;
-    }
-
     // Implementação do método da interface GerenciadorHistorico.
     @Override
     public String correlacionarAnamneses() {

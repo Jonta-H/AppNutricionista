@@ -13,6 +13,7 @@ public class Receita implements CalculadoraNutricional {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable=false)
     private String nome;
     private String categoria;
     private String modoPreparo;
@@ -23,15 +24,6 @@ public class Receita implements CalculadoraNutricional {
     private List<ItemReceita> ingredientes; // Composição
 
     public Receita() {
-        this.ingredientes = new ArrayList<>();
-    }
-
-    public Receita(String nome, String categoria,
-                   String modoPreparo, int rendimento) {
-        this.nome = nome;
-        this.categoria = categoria;
-        this.modoPreparo = modoPreparo;
-        this.rendimento = rendimento;
         this.ingredientes = new ArrayList<>();
     }
 
