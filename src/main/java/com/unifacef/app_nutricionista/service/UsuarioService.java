@@ -2,6 +2,9 @@ package com.unifacef.app_nutricionista.service;
 
 import com.unifacef.app_nutricionista.model.Usuario;
 import com.unifacef.app_nutricionista.repository.UsuarioRepository;
+
+import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +25,26 @@ public class UsuarioService {
         return usuarioRepository.findById(id);
     }
 
+    @Transactional
     public Usuario save(Usuario usuario) {
         return usuarioRepository.save(usuario);
     }
 
-    public void deleteById(Long id) {
-        usuarioRepository.deleteById(id);
+    @Transactional
+    public Usuario update(Long id, Usuario atual) {
+        if (usuarioRepository.existsById(id)) {
+            atual.setId(id);
+            return usuarioRepository.save(atual);
+        }
+        return null;
+    }
+
+    @Transactional
+    public boolean deleteById(Long id) {
+        if (usuarioRepository.existsById(id)) {
+            usuarioRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }
