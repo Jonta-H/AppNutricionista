@@ -30,11 +30,16 @@ public class AlimentoService {
 
     @Transactional
     public Alimento update(Long id, Alimento atual) {
-        if (repository.existsById(id)) {
-            atual.setId(id);
-            return repository.save(atual);
-        }
-        return null;
+        return repository.findById(id).map(existente -> {
+            if (atual.getNome() != null) existente.setNome(atual.getNome());
+            if (atual.getCalorias() != 0) existente.setCalorias(atual.getCalorias());
+            if (atual.getCarboidratos() != 0) existente.setCarboidratos(atual.getCarboidratos());
+            if (atual.getProteinas() != 0) existente.setProteinas(atual.getProteinas());
+            if (atual.getGorduras() != 0) existente.setGorduras(atual.getGorduras());
+            if (atual.getFibras() != 0) existente.setFibras(atual.getFibras());
+            if (atual.getPorcaoReferencia() != 0) existente.setPorcaoReferencia(atual.getPorcaoReferencia());
+            return repository.save(existente);
+        }).orElse(null);
     }
 
     @Transactional

@@ -32,11 +32,16 @@ public class UsuarioService {
 
     @Transactional
     public Usuario update(Long id, Usuario atual) {
-        if (usuarioRepository.existsById(id)) {
-            atual.setId(id);
-            return usuarioRepository.save(atual);
-        }
-        return null;
+        return usuarioRepository.findById(id).map(existente -> {
+            if (atual.getNomeCompleto() != null) existente.setNomeCompleto(atual.getNomeCompleto());
+            if (atual.getEmail() != null) existente.setEmail(atual.getEmail());
+            if (atual.getSenhaHash() != null) existente.setSenhaHash(atual.getSenhaHash());
+            if (atual.getTelefone() != null) existente.setTelefone(atual.getTelefone());
+            if (atual.getDataNascimento() != null) existente.setDataNascimento(atual.getDataNascimento());
+            if (atual.getGenero() != null) existente.setGenero(atual.getGenero());
+            if (atual.getFoto() != null) existente.setFoto(atual.getFoto());
+            return usuarioRepository.save(existente);
+        }).orElse(null);
     }
 
     @Transactional

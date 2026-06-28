@@ -30,11 +30,13 @@ public class ConsultaService {
 
     @Transactional
     public Consulta update(Long id, Consulta atual) {
-        if (repository.existsById(id)) {
-            atual.setId(id);
-            return repository.save(atual);
-        }
-        return null;
+        return repository.findById(id).map(existente -> {
+            if (atual.getDataHora() != null) existente.setDataHora(atual.getDataHora());
+            if (atual.getStatus() != null) existente.setStatus(atual.getStatus());
+            if (atual.getNutricionista() != null) existente.setNutricionista(atual.getNutricionista());
+            if (atual.getPaciente() != null) existente.setPaciente(atual.getPaciente());
+            return repository.save(existente);
+        }).orElse(null);
     }
 
     @Transactional

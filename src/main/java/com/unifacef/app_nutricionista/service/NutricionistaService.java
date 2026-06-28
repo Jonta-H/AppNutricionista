@@ -32,11 +32,21 @@ public class NutricionistaService {
 
     @Transactional
     public Nutricionista update(Long id, Nutricionista atual) {
-        if (nutricionistaRepository.existsById(id)) {
-            atual.setId(id);
-            return nutricionistaRepository.save(atual);
-        }
-        return null;
+        return nutricionistaRepository.findById(id).map(existente -> {
+            // Campos de Usuario
+            if (atual.getNomeCompleto() != null) existente.setNomeCompleto(atual.getNomeCompleto());
+            if (atual.getEmail() != null) existente.setEmail(atual.getEmail());
+            if (atual.getSenhaHash() != null) existente.setSenhaHash(atual.getSenhaHash());
+            if (atual.getTelefone() != null) existente.setTelefone(atual.getTelefone());
+            if (atual.getDataNascimento() != null) existente.setDataNascimento(atual.getDataNascimento());
+            if (atual.getGenero() != null) existente.setGenero(atual.getGenero());
+            if (atual.getFoto() != null) existente.setFoto(atual.getFoto());
+            // Campos de Nutricionista
+            if (atual.getCrn() != null) existente.setCrn(atual.getCrn());
+            if (atual.getNomeClinica() != null) existente.setNomeClinica(atual.getNomeClinica());
+            if (atual.getLogoTipoClinica() != null) existente.setLogoTipoClinica(atual.getLogoTipoClinica());
+            return nutricionistaRepository.save(existente);
+        }).orElse(null);
     }
 
     @Transactional

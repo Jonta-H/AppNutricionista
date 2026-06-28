@@ -30,11 +30,15 @@ public class RefeicaoService {
 
     @Transactional
     public Refeicao update(Long id, Refeicao atual) {
-        if (repository.existsById(id)) {
-            atual.setId(id);
-            return repository.save(atual);
-        }
-        return null;
+        return repository.findById(id).map(existente -> {
+            if (atual.getNome() != null) existente.setNome(atual.getNome());
+            if (atual.getHorarioSugerido() != null) existente.setHorarioSugerido(atual.getHorarioSugerido());
+            if (atual.getItens() != null && !atual.getItens().isEmpty()) {
+                existente.getItens().clear();
+                existente.getItens().addAll(atual.getItens());
+            }
+            return repository.save(existente);
+        }).orElse(null);
     }
 
     @Transactional

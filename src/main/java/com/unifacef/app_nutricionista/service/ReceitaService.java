@@ -30,11 +30,17 @@ public class ReceitaService {
 
     @Transactional
     public Receita update(Long id, Receita atual) {
-        if (repository.existsById(id)) {
-            atual.setId(id);
-            return repository.save(atual);
-        }
-        return null;
+        return repository.findById(id).map(existente -> {
+            if (atual.getNome() != null) existente.setNome(atual.getNome());
+            if (atual.getCategoria() != null) existente.setCategoria(atual.getCategoria());
+            if (atual.getModoPreparo() != null) existente.setModoPreparo(atual.getModoPreparo());
+            if (atual.getRendimento() != 0) existente.setRendimento(atual.getRendimento());
+            if (atual.getIngredientes() != null && !atual.getIngredientes().isEmpty()) {
+                existente.getIngredientes().clear();
+                existente.getIngredientes().addAll(atual.getIngredientes());
+            }
+            return repository.save(existente);
+        }).orElse(null);
     }
 
     @Transactional

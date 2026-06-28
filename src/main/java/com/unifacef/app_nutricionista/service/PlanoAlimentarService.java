@@ -47,11 +47,27 @@ public class PlanoAlimentarService {
 
     @Transactional
     public PlanoAlimentar update(Long id, PlanoAlimentar atual) {
-        if (repository.existsById(id)) {
-            atual.setId(id);
-            return repository.save(atual);
-        }
-        return null;
+        return repository.findById(id).map(existente -> {
+            if (atual.getTitulo() != null) existente.setTitulo(atual.getTitulo());
+            if (atual.getDataCriacao() != null) existente.setDataCriacao(atual.getDataCriacao());
+            if (atual.getObjetivo() != null) existente.setObjetivo(atual.getObjetivo());
+            if (atual.isAtivo() != null) existente.setAtivo(atual.isAtivo());
+            if (atual.getDataValidade() != null) existente.setDataValidade(atual.getDataValidade());
+            if (atual.getPaciente() != null) existente.setPaciente(atual.getPaciente());
+            if (atual.getRefeicoes() != null && !atual.getRefeicoes().isEmpty()) {
+                List<Refeicao> managedRefeicoes = new ArrayList<>();
+                for (Refeicao ref : atual.getRefeicoes()) {
+                    if (ref.getId() != null) {
+                        refeicaoRepository.findById(ref.getId()).ifPresent(managedRefeicoes::add);
+                    } else {
+                        managedRefeicoes.add(ref);
+                    }
+                }
+                existente.getRefeicoes().clear();
+                existente.getRefeicoes().addAll(managedRefeicoes);
+            }
+            return repository.save(existente);
+        }).orElse(null);
     }
 
     @Transactional

@@ -30,11 +30,15 @@ public class AvaliacaoCorporalService {
 
     @Transactional
     public AvaliacaoCorporal update(Long id, AvaliacaoCorporal atual) {
-        if (repository.existsById(id)) {
-            atual.setId(id);
-            return repository.save(atual);
-        }
-        return null;
+        return repository.findById(id).map(existente -> {
+            if (atual.getDataAvaliacao() != null) existente.setDataAvaliacao(atual.getDataAvaliacao());
+            if (atual.getPeso() != 0) existente.setPeso(atual.getPeso());
+            if (atual.getAltura() != 0) existente.setAltura(atual.getAltura());
+            if (atual.getIdadePacienteNaData() != 0) existente.setIdadePacienteNaData(atual.getIdadePacienteNaData());
+            if (atual.getMedidas() != null) existente.setMedidas(atual.getMedidas());
+            if (atual.getPaciente() != null) existente.setPaciente(atual.getPaciente());
+            return repository.save(existente);
+        }).orElse(null);
     }
 
     @Transactional
