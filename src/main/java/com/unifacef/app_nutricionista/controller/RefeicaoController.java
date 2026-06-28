@@ -3,6 +3,7 @@ package com.unifacef.app_nutricionista.controller;
 import com.unifacef.app_nutricionista.model.Refeicao;
 import com.unifacef.app_nutricionista.service.RefeicaoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -31,7 +32,7 @@ public class RefeicaoController {
     }
 
     @PostMapping
-    public ResponseEntity<Refeicao> createRefeicao(@RequestBody Refeicao refeicao) {
+    public ResponseEntity<Refeicao> createRefeicao(@Valid @RequestBody Refeicao refeicao) {
         Refeicao saved = service.save(refeicao);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")

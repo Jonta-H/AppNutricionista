@@ -3,6 +3,7 @@ package com.unifacef.app_nutricionista.controller;
 import com.unifacef.app_nutricionista.model.AvaliacaoCorporal;
 import com.unifacef.app_nutricionista.service.AvaliacaoCorporalService;
 import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -31,7 +32,7 @@ public class AvaliacaoCorporalController {
     }
 
     @PostMapping
-    public ResponseEntity<AvaliacaoCorporal> createAvaliacao(@RequestBody AvaliacaoCorporal avaliacao) {
+    public ResponseEntity<AvaliacaoCorporal> createAvaliacao(@Valid @RequestBody AvaliacaoCorporal avaliacao) {
         AvaliacaoCorporal saved = service.save(avaliacao);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")

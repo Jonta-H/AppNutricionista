@@ -3,6 +3,7 @@ package com.unifacef.app_nutricionista.controller;
 import com.unifacef.app_nutricionista.model.Usuario;
 import com.unifacef.app_nutricionista.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -31,7 +32,7 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<Usuario> createUsuario(@RequestBody Usuario usuario) {
+    public ResponseEntity<Usuario> createUsuario(@Valid @RequestBody Usuario usuario) {
         Usuario saved = usuarioService.save(usuario);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
