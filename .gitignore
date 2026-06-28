@@ -33,3 +33,4 @@ build/
 .vscode/
 .agents/
 scripts_teste/
+spring_boot.log
