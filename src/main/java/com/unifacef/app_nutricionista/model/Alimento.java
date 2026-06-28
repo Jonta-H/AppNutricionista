@@ -1,6 +1,7 @@
 package com.unifacef.app_nutricionista.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "alimentos")
@@ -10,6 +11,7 @@ public class Alimento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Nome do alimento é obrigatório")
     @Column(nullable=false)
     private String nome;
     private double calorias;

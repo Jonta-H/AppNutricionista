@@ -1,6 +1,7 @@
 package com.unifacef.app_nutricionista.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ public class Refeicao implements CalculadoraNutricional {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "Nome da refeição é obrigatório")
     @Column(nullable=false)
     private String nome;
     private LocalTime horarioSugerido;

@@ -2,6 +2,7 @@ package com.unifacef.app_nutricionista.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -18,6 +19,7 @@ public class AvaliacaoCorporal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotNull(message = "Data da avaliação é obrigatória")
     @Column(nullable = false)
     private LocalDate dataAvaliacao;
     private double peso;

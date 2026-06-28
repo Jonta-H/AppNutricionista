@@ -1,6 +1,8 @@
 package com.unifacef.app_nutricionista.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
@@ -13,16 +15,22 @@ public abstract class Usuario implements Autenticavel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
+    @NotBlank(message = "Nome completo é obrigatório")
     @Column(nullable = false)
     protected String nomeCompleto;
+    @NotBlank(message = "Email é obrigatório")
     @Column(nullable = false)
     protected String email;
+    @NotBlank(message = "Senha é obrigatória")
     @Column(nullable = false)
     protected String senhaHash;
+    @NotBlank(message = "Telefone é obrigatório")
     @Column(nullable = false)
     protected String telefone;
+    @NotNull(message = "Data de nascimento é obrigatória")
     @Column(nullable = false)
     protected LocalDate dataNascimento;
+    @NotBlank(message = "Gênero é obrigatório")
     @Column(nullable = false)
     protected String genero; // "M", "F" ou "O"
     @Column(name = "url_foto", length = 521)

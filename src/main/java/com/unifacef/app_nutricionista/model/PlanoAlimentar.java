@@ -2,6 +2,8 @@ package com.unifacef.app_nutricionista.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -21,13 +23,15 @@ public class PlanoAlimentar implements CalculadoraNutricional, Exportavel {
     @JsonIgnoreProperties({"historicoDietas", "nutricionista", "historicoAvaliacoes", "historicoConsulta", "historicoAnamneses", "dietaVigente"})
     private Paciente paciente;
 
+    @NotBlank(message = "Título é obrigatório")
     @Column(nullable=false)
     private String titulo;
+    @NotNull(message = "Data de criação é obrigatória")
     @Column(nullable=false)
     private LocalDate dataCriacao;
+    @NotBlank(message = "Objetivo é obrigatório")
     @Column(nullable=false)
     private String objetivo;
-    @Column(nullable=false)
     private Boolean ativo;
     private LocalDate dataValidade;
 

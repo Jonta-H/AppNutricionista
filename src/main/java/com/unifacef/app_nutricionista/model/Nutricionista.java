@@ -2,7 +2,7 @@ package com.unifacef.app_nutricionista.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import java.time.LocalDate;
+import jakarta.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,8 +11,10 @@ import java.util.List;
 @DiscriminatorValue("nutricionista")
 public class Nutricionista extends Usuario {
 
+    @NotBlank(message = "CRN é obrigatório")
     @Column(nullable=false)
     private String crn;  // CRN
+    @NotBlank(message = "Nome da clínica é obrigatório")
     @Column(nullable=false)
     private String nomeClinica;
     @Column(name = "url_logoClinica", length = 521)

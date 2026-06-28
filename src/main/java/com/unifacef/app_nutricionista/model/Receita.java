@@ -1,6 +1,7 @@
 package com.unifacef.app_nutricionista.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,7 @@ public class Receita implements CalculadoraNutricional {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Nome da receita é obrigatório")
     @Column(nullable=false)
     private String nome;
     private String categoria;

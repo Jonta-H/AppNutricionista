@@ -2,6 +2,8 @@ package com.unifacef.app_nutricionista.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
@@ -11,16 +13,18 @@ public class Consulta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotNull(message = "Data e hora são obrigatórias")
     @Column(nullable=false)
     private LocalDateTime dataHora;
-    @Column(nullable=false)
     private String status;         // "AGENDADA", "REALIZADA", "CANCELADA"
 
+    @NotNull(message = "Nutricionista é obrigatório")
     @ManyToOne
     @JoinColumn(name = "nutricionista_id", nullable = false)
     @JsonIgnoreProperties("pacientes")
     private Nutricionista nutricionista;
 
+    @NotNull(message = "Paciente é obrigatório")
     @ManyToOne
     @JoinColumn(name = "paciente_id", nullable = false)
     @JsonIgnoreProperties({"historicoConsulta", "nutricionista", "historicoDietas", "historicoAvaliacoes", "historicoAnamneses", "dietaVigente"})
